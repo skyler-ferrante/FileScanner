@@ -13,3 +13,6 @@ python3 -m scripts.find_by_hash #To search for a specific hash
 python3 -m scripts.check_hashes #To see if any files changed
 python3 -m scripts.check_new_files #To see if there is any new files
 ```
+
+MD5 is used for hashing, and it is therefore possible to have collisions.
+Using a secure hash algorithm however, would be too slow.
