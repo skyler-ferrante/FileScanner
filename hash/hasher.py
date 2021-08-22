@@ -6,7 +6,7 @@ import database.database
 import hashlib
 import sys
 
-def hash_file(filename, hasher = hashlib.md5) -> str:
+def hash_file(filename, hasher = hashlib.sha256) -> str:
     hasher = hasher()
     
     #Open file in binary mode

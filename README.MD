@@ -15,6 +15,3 @@ After the database is generated you can use:
 ./check.py -h hash      #Find files with given hash
 ./check.py file         #File to check if hash has changed
 ```
-
-MD5 is used for hashing, and it is therefore possible to have collisions.
-Using a secure hash algorithm however, would be too slow.
