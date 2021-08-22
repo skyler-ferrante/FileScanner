@@ -1,0 +1,75 @@
+from typing import Iterable
+from hash import hasher
+from filelist.walker import walker 
+from database.database import Database
+
+import sys
+
+class FileScanner():
+    __slots__ = ["database"]
+
+    def __init__(self) -> None:
+        self.database = Database()
+
+    def mark_file(self, filename : str):
+        hash = hasher.hash_file(filename)
+        self.database.write_file(filename, hash)
+
+    def mark_files(self, filenames : Iterable):
+        self.database.start_transaction()
+        
+        for filename in filenames:
+            self.mark_file(filename)            
+
+        self.database.end_transaction()
+
+    def mark_directory_recursive(self, path):
+        filenames = walker(path)
+        self.mark_files(filenames)
+
+        self.database.start_transaction()
+        self.database.register_directory(path)
+        self.database.end_transaction()
+
+    def mark_directories_recursive(self, paths):
+        for path in paths:
+            self.mark_directory_recursive(path)
+
+    def check_file_hash(self, filename):
+        new_hash = hasher.hash_file(filename)
+        old_hash = self.database.get_by_filepath(filename).fetchall()[0][0]
+        if new_hash != old_hash:
+            print(filename, "new:", new_hash, "old:", old_hash)
+
+    def find_new_files(self):
+        paths = self.database.get_directories()
+        paths = [path[0] for path in paths]
+
+        registered_files = self.database.get_all_files()
+        registered_files = [file[0] for file in registered_files]
+
+        for path in paths:
+            all_files = walker(path)
+
+            for file in all_files:
+                if file not in registered_files:
+                    hash = hasher.hash_file(file)
+                    print(file, hash)
+
+    def find_changed_files(self):
+        files_and_hashes = self.database.get_all()
+
+        for file_and_hash in files_and_hashes:
+            file = file_and_hash[0]
+            orginal_hash = file_and_hash[1]
+            new_hash = hasher.hash_file(file)
+
+            if orginal_hash != new_hash:
+                print(file+" "+new_hash)
+    
+    def find_by_hash(self, hash):
+        for file in self.database.get_by_hash(hash):
+            print(hash, file[0])
+
+    def show_database_hash(self):
+        hasher.show_database_hash()    

@@ -31,4 +31,4 @@ def show_database_hash():
     database_hash = hash_file(database_filename)
     
     #prints database hash to stderr, so it's not piped
-    print("DB HASH: "+database_hash+"\n", file=sys.stderr)
+    print("DB HASH: "+database_hash, file=sys.stderr)
