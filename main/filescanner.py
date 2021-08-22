@@ -37,7 +37,12 @@ class FileScanner():
 
     def check_file_hash(self, filename):
         new_hash = hasher.hash_file(filename)
-        old_hash = self.database.get_by_filepath(filename).fetchall()[0][0]
+        old_hash = self.database.get_by_filepath(filename).fetchall()
+        if len(old_hash) == 0:
+            print(filename, "not in database")
+            return
+        old_hash, = old_hash[0]
+
         if new_hash != old_hash:
             print(filename, "new:", new_hash, "old:", old_hash)
 
