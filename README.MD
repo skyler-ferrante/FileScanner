@@ -14,4 +14,6 @@ After the database is generated you can use:
 ./check.py -c           #Find all changed files
 ./check.py -h hash      #Find files with given hash
 ./check.py file         #File to check if hash has changed
+./mark.py  -u           #Update database
+./info.py               #Get basic information on database
 ```
