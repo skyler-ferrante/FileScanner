@@ -50,6 +50,7 @@ class FileScanner():
 
             for file in all_files:
                 if file not in registered_files:
+                    print("New file", file)
                     self.mark_file(file)
         #Update all old files
         for filepath in registered_files:
