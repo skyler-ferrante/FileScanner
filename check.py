@@ -8,8 +8,9 @@ if __name__ == "__main__":
 
     if len(sys.argv) == 1:
         print("Usage:")
-        print(sys.argv[0], "-n to find new files")
-        print(sys.argv[0], "-c to find changed files")
+        print(sys.argv[0], "-n          to find new files")
+        print(sys.argv[0], "-c          to find changed files")
+        print(sys.argv[0], "-h hash     to find specific hash")
         sys.exit(1)
     argv = sys.argv[1:]
 

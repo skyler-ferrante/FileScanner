@@ -7,9 +7,9 @@ if __name__ == "__main__":
 
     if len(sys.argv) == 1:
         print("Usage:")
-        print(sys.argv[0], "file/files")
-        print(sys.argv[0], "directory/directories", "-r")
-        print(sys.argv[0], "-u")
+        print(sys.argv[0], "file            Mark file")
+        print(sys.argv[0], "directory -r    Mark directory recursive")
+        print(sys.argv[0], "-u              Update")
         sys.exit(1)
     filenames = sys.argv[1:]
 
