@@ -1,4 +1,5 @@
 from typing import Iterable
+import os.path
 from hash import hasher
 from filelist.walker import walker 
 from database.database import Database
@@ -35,6 +36,31 @@ class FileScanner():
         for path in paths:
             self.mark_directory_recursive(path)
 
+    def update_file_hashes(self):
+        paths = self.database.get_directories()
+        paths = [path[0] for path in paths]
+
+        registered_files = self.database.get_all_files()
+        registered_files = [file[0] for file in registered_files]
+
+        self.database.start_transaction()
+        #Find and update all new files
+        for path in paths:
+            all_files = walker(path)
+
+            for file in all_files:
+                if file not in registered_files:
+                    self.mark_file(file)
+        #Update all old files
+        for filepath in registered_files:
+            if not os.path.isfile(filepath):
+                print("Removing",filepath)
+                self.database.remove_file(filepath)
+                registered_files.remove(filepath)
+        self.database.end_transaction()
+
+        self.mark_files(registered_files)
+
     def check_file_hash(self, filename):
         new_hash = hasher.hash_file(filename)
         old_hash = self.database.get_by_filepath(filename).fetchall()
@@ -67,7 +93,11 @@ class FileScanner():
         for file_and_hash in files_and_hashes:
             file = file_and_hash[0]
             orginal_hash = file_and_hash[1]
-            new_hash = hasher.hash_file(file)
+            try:
+                new_hash = hasher.hash_file(file)
+            except FileNotFoundError:
+                print(file, "REMOVED")
+                break
 
             if orginal_hash != new_hash:
                 print(file+" "+new_hash)

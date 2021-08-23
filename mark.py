@@ -6,12 +6,18 @@ if __name__ == "__main__":
     filescanner = FileScanner()    
 
     if len(sys.argv) == 1:
-        print("Usage:", sys.argv[0], "files")
-        print("Or: ", sys.argv[0], "directory", "-r")
+        print("Usage:")
+        print(sys.argv[0], "file/files")
+        print(sys.argv[0], "directory/directories", "-r")
+        print(sys.argv[0], "-u")
         sys.exit(1)
     filenames = sys.argv[1:]
 
-    if "-r" in filenames:
+    if "-u" in filenames:
+        print("Updating...")
+        filescanner.update_file_hashes()
+
+    elif "-r" in filenames:
         filenames.remove("-r")
         for file in filenames:
             filescanner.mark_directory_recursive(file)

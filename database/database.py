@@ -32,11 +32,12 @@ class Database:
         # self.cursor.execute("COMMIT")
         self.database.commit()
 
-    # Note: this will autoreplace values already entered
     def write_file(self, file_name : str, hash : str):
         self.cursor.execute("INSERT OR REPLACE INTO file VALUES (?, ?)", (file_name, hash))
 
-    # Note: this will autoreplace values already entered
+    def remove_file(self, filepath: str):
+        self.cursor.execute("DELETE FROM file WHERE filepath=(?)", (filepath,))
+
     def register_directory(self, directory):
         self.cursor.execute("INSERT OR REPLACE INTO directory VALUES (?)", (directory,))
 
