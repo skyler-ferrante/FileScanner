@@ -44,17 +44,17 @@ class Database:
     # NOTE: THESE ARE USING THE SAME DATABASE CONNECTION, put data into something before calling another database method
     # DATA WILL BE CLEARED IF ANOTHER DATABASE METHOD IS CALLED
 
-    def get_all(self) -> list:
+    def get_all(self):
         return self.cursor.execute("SELECT * FROM file")
 
-    def get_all_files(self) -> list:
+    def get_all_files(self):
         return self.cursor.execute("SELECT filepath FROM file")
 
-    def get_by_hash(self, hash : str) -> list:
+    def get_by_hash(self, hash : str):
         return self.cursor.execute("SELECT filepath FROM file WHERE hash=(?)", (hash,))
 
     def get_by_filepath(self, filepath : str):
         return self.cursor.execute("SELECT hash FROM file WHERE filepath=(?)", (filepath,))
 
-    def get_directories(self) -> list:
+    def get_directories(self):
         return self.cursor.execute("SELECT directorypath FROM directory")
