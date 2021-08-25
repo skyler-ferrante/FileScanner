@@ -34,6 +34,6 @@ if __name__ == "__main__":
     filescanner.mark_directories_recursive(directories)
 
     for unknown in unknowns:
-        print(unknown, "is neither a known flag, file, or directory")
+        print(unknown, "is not a known flag, file, or directory")
 
     filescanner.show_database_hash()
