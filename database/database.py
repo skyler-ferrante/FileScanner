@@ -1,6 +1,6 @@
 import sqlite3
 
-DATABASE_FILE_NAME = "database/main.db"
+DATABASE_FILE_NAME = "main.db"
 
 #Reuses same database connection
 class Database:
