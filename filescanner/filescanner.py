@@ -95,13 +95,12 @@ class FileScanner():
             file = file_and_hash[0]
             orginal_hash = file_and_hash[1]
             try:
-                new_hash = hasher.hash_file(file)
+                new_hash = hasher.hash_file(file)    
+                if orginal_hash != new_hash:
+                    print(file,"changed",new_hash)
+            
             except FileNotFoundError:
-                print(file, "removed")
-                break
-
-            if orginal_hash != new_hash:
-                print(file,"changed",new_hash)
+                print(file,"removed")
     
     def find_by_hash(self, hash):
         for file in self.database.get_by_hash(hash):
