@@ -1,5 +1,5 @@
 #!/bin/python3
-from main.filescanner import FileScanner
+from filescanner.filescanner import FileScanner
 import sys
 import os
 

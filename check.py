@@ -1,5 +1,5 @@
 #!/bin/python3
-from main.filescanner import FileScanner
+from filescanner.filescanner import FileScanner
 
 import sys
 
@@ -11,6 +11,7 @@ if __name__ == "__main__":
         print(sys.argv[0], "-n          to find new files")
         print(sys.argv[0], "-c          to find changed files")
         print(sys.argv[0], "-h hash     to find specific hash")
+        print(sys.argv[0], "file        to check specific files")
         sys.exit(1)
     argv = sys.argv[1:]
 
