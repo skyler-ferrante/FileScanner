@@ -4,8 +4,8 @@ Creates a sqlite database with filepaths and hash
 
 To generate the database use:
 ```
-./mark.py -r /etc/      #Mark all files in /etc/ recursively
-./mark.py /etc/*.conf   #Mark all files matching /etc/*.conf 
+./mark.py /etc/         #Mark all files in /etc/ recursively (including subdirectories)
+./mark.py /etc/*.conf   #Mark all files matching /etc/*.conf
 ```
 
 After the database is generated you can use:
