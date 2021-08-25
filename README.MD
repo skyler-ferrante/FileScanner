@@ -11,6 +11,7 @@ Generating the database and looking for changes only takes a second or two on my
 To generate the database use:
 ```
 ./mark.py /etc/         #Mark all files in /etc/ recursively (including subdirectories)
+                        #Or
 ./mark.py /etc/*.conf   #Mark all files matching /etc/*.conf
 ```
 
