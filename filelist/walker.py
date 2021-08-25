@@ -10,7 +10,7 @@ def walker(path : str, deny_list : Iterable = DENY_LIST):
 
     result = []
 
-    if path[-1] == "/":
+    if path[-1] == "/" and path != "/":
         path = path[0:-1]
 
     #Get all files/dirs, not including symlinks
