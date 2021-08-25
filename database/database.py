@@ -41,14 +41,16 @@ class Database:
     def register_directory(self, directory):
         old_directories = self.get_directories().fetchall()
 
-        #If already registered
-        if directory in old_directories:
-            return
-
-        #If closer to root than existing path
-        #E.g. /etc/X11 can be removed if directory is /etc/
+        # Don't add if an old directory is closer to root
+        # Remove all old directories that are farther from root 
         for old_directory in old_directories:
             old_directory = old_directory[0]
+
+            # Old directory closer to root
+            if old_directory in directory:
+                return
+
+            # New directory closer to root
             if directory in old_directory:
                 print("Removing old path", old_directory)
                 self.remove_directory(old_directory)
