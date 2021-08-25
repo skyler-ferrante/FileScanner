@@ -39,7 +39,24 @@ class Database:
         self.cursor.execute("DELETE FROM file WHERE filepath=(?)", (filepath,))
 
     def register_directory(self, directory):
+        old_directories = self.get_directories().fetchall()
+
+        #If already registered
+        if directory in old_directories:
+            return
+
+        #If closer to root than existing path
+        #E.g. /etc/X11 can be removed if directory is /etc/
+        for old_directory in old_directories:
+            old_directory = old_directory[0]
+            if directory in old_directory:
+                print("Removing old path", old_directory)
+                self.remove_directory(old_directory)
+
         self.cursor.execute("INSERT OR REPLACE INTO directory VALUES (?)", (directory,))
+    
+    def remove_directory(self, directorypath: str):
+        self.cursor.execute("DELETE FROM directory WHERE directorypath=(?)", (directorypath,))
 
     # NOTE: THESE ARE USING THE SAME DATABASE CONNECTION, put data into something before calling another database method
     # DATA WILL BE CLEARED IF ANOTHER DATABASE METHOD IS CALLED
