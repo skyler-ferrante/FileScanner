@@ -2,6 +2,12 @@
 
 Creates a sqlite database with filepaths and hash
 
+Uses file hashes to find file changes
+
+This could be useful to quickly see what configuration files were changed, after something breaks
+
+Generating the database and looking for changes only takes a second or two on my machine, using the directory /etc/
+
 To generate the database use:
 ```
 ./mark.py /etc/         #Mark all files in /etc/ recursively (including subdirectories)
