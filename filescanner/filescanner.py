@@ -86,7 +86,7 @@ class FileScanner():
             for file in all_files:
                 if file not in registered_files:
                     hash = hasher.hash_file(file)
-                    print(file, hash)
+                    print(file, "created", hash)
 
     def find_changed_files(self):
         files_and_hashes = self.database.get_all()
@@ -97,15 +97,15 @@ class FileScanner():
             try:
                 new_hash = hasher.hash_file(file)
             except FileNotFoundError:
-                print(file, "REMOVED")
+                print(file, "removed")
                 break
 
             if orginal_hash != new_hash:
-                print(file+" "+new_hash)
+                print(file,"changed",new_hash)
     
     def find_by_hash(self, hash):
         for file in self.database.get_by_hash(hash):
             print(hash, file[0])
 
     def show_database_hash(self):
-        hasher.show_database_hash()    
+        hasher.show_database_hash()
