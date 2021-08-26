@@ -2,6 +2,7 @@
 from filescanner.filescanner import FileScanner
 
 import sys
+import os
 
 if __name__ == "__main__":
     filescanner = FileScanner()
@@ -24,4 +25,7 @@ if __name__ == "__main__":
             filescanner.find_by_hash(hash)
     else:
         for filename in argv:
-            filescanner.check_file_hash(filename)
+            if os.path.isfile(filename):
+                filescanner.check_file_hash(filename)
+            else:
+                print(filename,"is not a file")
