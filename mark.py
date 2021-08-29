@@ -35,5 +35,3 @@ if __name__ == "__main__":
 
     for unknown in unknowns:
         print(unknown, "is not a known flag, file, or directory")
-
-    filescanner.show_database_hash()

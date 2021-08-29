@@ -105,6 +105,3 @@ class FileScanner():
     def find_by_hash(self, hash):
         for file in self.database.get_by_hash(hash):
             print(hash, file[0])
-
-    def show_database_hash(self):
-        hasher.show_database_hash()
