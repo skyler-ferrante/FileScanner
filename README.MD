@@ -1,8 +1,8 @@
-# FileScanner
+# File Scanner
 
-Creates a sqlite database correlating filepaths to file hashes
+Creates an sqlite database correlating filepaths to file hashes
 
-Uses file hashes to find file changes
+The current state of the system can be check against this database to check for changes
 
 This could be useful to quickly see what configuration files were changed, after something breaks
 
