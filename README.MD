@@ -17,6 +17,7 @@ After the database is generated you can use:
 ```
 ./check.py -c           #Find all changes (Only works if mark is called with directory)
 ./check.py -h hash      #Find files with given hash
+./check.py -h <file     #Find all files with hashes in file
 ./check.py file         #File to check if hash has changed
 ./mark.py  -u           #Update database
 ./info.py               #Get basic information on database
