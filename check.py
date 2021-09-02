@@ -19,6 +19,8 @@ if __name__ == "__main__":
         argv.remove("-c")
         filescanner.find_new_files()
         filescanner.find_changed_files()
+        if len(argv) != 0:
+            print("-c causes all other arguments to be ignored")
     elif "-h" in argv:
         argv.remove("-h")
         if len(argv) == 0:
