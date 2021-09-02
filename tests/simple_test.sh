@@ -48,6 +48,15 @@ then
     echo "Should have one directory, $directories found"
 fi
 
+# Try to update db, should have two lines of output
+#   Updating...
+#   Removing /tmp/tmp.Whatever/test
+update_output=$(./mark.py -u | wc -l)
+if test $update_output -ne 2;
+then
+    echo "Update had incorrect output"
+fi
+
 #Remove main.db created during this script
 rm main.db
 #If main.db.bak exists, move back to main.db
