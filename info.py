@@ -11,6 +11,5 @@ if __name__ == "__main__":
     for directory in directories:
         print(directory[0])
     
-    print()
     print(len(files), "files")
     print(len(directories), "directories")
