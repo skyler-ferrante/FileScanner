@@ -1,10 +1,6 @@
 #!/bin/python3
-# from database import *
-
-import database.database
 
 import hashlib
-import sys
 
 def hash_file(filename, hasher = hashlib.sha256) -> str:
     hasher = hasher()
