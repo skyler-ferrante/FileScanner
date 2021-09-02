@@ -4,15 +4,19 @@ import sys
 import os
 
 if __name__ == "__main__":
-    filescanner = FileScanner()    
+    filescanner = FileScanner()
 
-    if len(sys.argv) == 1:
+    # Remove running file from argv
+    args = sys.argv[1:]
+
+    # If no arguments given, print help message and exit
+    if len(args) == 0:
         print("Usage:")
         print(sys.argv[0], "file            Mark files or directories")
         print(sys.argv[0], "-u              Update")
         sys.exit(0)
-    args = sys.argv[1:]
 
+    # If -u, Update database
     if "-u" in args:
         args.remove("-u")
         print("Updating...")
@@ -22,6 +26,7 @@ if __name__ == "__main__":
     directories = []
     unknowns = []
 
+    # For every argument given, check if file or directory
     for arg in args:
         if os.path.isfile(arg):
             files.append(arg)
@@ -30,8 +35,10 @@ if __name__ == "__main__":
         else:
             unknowns.append(arg)
 
+    # Mark every file and directory that is given as arguments
     filescanner.mark_files(files)
     filescanner.mark_directories_recursive(directories)
 
+    # For all arguments given that are not files or directories, print error message
     for unknown in unknowns:
         print(unknown, "is not a known flag, file, or directory")
