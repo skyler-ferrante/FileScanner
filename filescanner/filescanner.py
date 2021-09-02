@@ -48,7 +48,6 @@ class FileScanner():
         Update database with new/changed files in registered directories recursively.
         Uses sql transactions.
         """
-        self.mark_directories_recursive()
         #Get all registered directories
         paths = self.database.get_directories()
         paths = [path[0] for path in paths]
