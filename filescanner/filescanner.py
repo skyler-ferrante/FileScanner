@@ -13,10 +13,15 @@ class FileScanner():
         self.database = Database()
 
     def mark_file(self, filename : str):
+        """Hash file, and add filename and hash to database"""
         hash = hasher.hash_file(filename)
         self.database.write_file(filename, hash)
 
     def mark_files(self, filenames : Iterable):
+        """
+        Call mark_file on every filename in filenames.
+        Uses sql transactions.
+        """
         self.database.start_transaction()
         
         for filename in filenames:
@@ -25,6 +30,7 @@ class FileScanner():
         self.database.end_transaction()
 
     def mark_directory_recursive(self, path):
+        """Add directory, subdirectories, and files to database"""
         filenames = walker(path)
         self.mark_files(filenames)
 
@@ -33,18 +39,27 @@ class FileScanner():
         self.database.end_transaction()
 
     def mark_directories_recursive(self, paths):
+        """Call mark_directory_recursive on all paths"""
         for path in paths:
             self.mark_directory_recursive(path)
 
     def update_file_hashes(self):
+        """
+        Update database with new/changed files in registered directories recursively.
+        Uses sql transactions.
+        """
+        self.mark_directories_recursive()
+        #Get all registered directories
         paths = self.database.get_directories()
         paths = [path[0] for path in paths]
 
+        #Get all registered files
         registered_files = self.database.get_all_files()
         registered_files = [file[0] for file in registered_files]
 
         self.database.start_transaction()
-        #Find and update all new files
+        
+        #Find and mark all new files
         for path in paths:
             all_files = walker(path)
 
@@ -52,6 +67,7 @@ class FileScanner():
                 if file not in registered_files:
                     print("New file", file)
                     self.mark_file(file)
+        
         #Update all old files
         for filepath in registered_files:
             if not os.path.isfile(filepath):
@@ -63,17 +79,27 @@ class FileScanner():
         self.mark_files(registered_files)
 
     def check_file_hash(self, filename):
-        new_hash = hasher.hash_file(filename)
+        """Print file changes to stdout"""
         old_hash = self.database.get_by_filepath(filename).fetchall()
+        
+        #File not in database
         if len(old_hash) == 0:
             print(filename, "not in database")
             return
         old_hash, = old_hash[0]
-
-        if new_hash != old_hash:
-            print(filename, "new:", new_hash, "old:", old_hash)
+        
+        try:
+            #File changed
+            new_hash = hasher.hash_file(filename)
+            if old_hash != new_hash:
+                print(filename,"changed",new_hash)
+        
+        except FileNotFoundError:
+            #File removed
+            print(filename,"removed")
 
     def find_new_files(self):
+        """Print new files to stdout"""
         paths = self.database.get_directories()
         paths = [path[0] for path in paths]
 
@@ -89,19 +115,16 @@ class FileScanner():
                     print(file, "created", hash)
 
     def find_changed_files(self):
-        files_and_hashes = self.database.get_all()
+        """Run check_file_hash on all files"""
+        files = self.database.get_all_files()
+        files = [file[0] for file in files]
+        for file in files:
+            self.check_file_hash(file)
 
-        for file_and_hash in files_and_hashes:
-            file = file_and_hash[0]
-            orginal_hash = file_and_hash[1]
-            try:
-                new_hash = hasher.hash_file(file)    
-                if orginal_hash != new_hash:
-                    print(file,"changed",new_hash)
-            
-            except FileNotFoundError:
-                print(file,"removed")
-    
     def find_by_hash(self, hash):
+        """
+        Find file by hash in database.
+        Does not walk files/use new file contents.
+        """
         for file in self.database.get_by_hash(hash):
             print(hash, file[0])
