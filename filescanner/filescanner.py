@@ -1,3 +1,4 @@
+from hash.hasher import permissions
 from typing import Iterable
 import os.path
 from hash import hasher
@@ -15,7 +16,8 @@ class FileScanner():
     def mark_file(self, filename : str):
         """Hash file, and add filename and hash to database"""
         hash = hasher.hash(filename)
-        self.database.write_file(filename, hash)
+        permissions = hasher.permissions(filename)
+        self.database.write_file(filename, hash, permissions)
 
     def mark_files(self, filenames : Iterable):
         """
@@ -25,7 +27,7 @@ class FileScanner():
         self.database.start_transaction()
         
         for filename in filenames:
-            self.mark_file(filename)            
+            self.mark_file(filename)
 
         self.database.end_transaction()
 
@@ -43,7 +45,7 @@ class FileScanner():
         for path in paths:
             self.mark_directory_recursive(path)
 
-    def update_file_hashes(self):
+    def update_files(self):
         """
         Update database with new/changed files in registered directories recursively.
         Uses sql transactions.
@@ -77,21 +79,27 @@ class FileScanner():
 
         self.mark_files(registered_files)
 
-    def check_file_hash(self, filename):
+    def check_file(self, filename):
         """Print file changes to stdout"""
-        old_hash = self.database.get_by_filepath(filename).fetchall()
-        
+        old_file = self.database.get_by_filepath(filename).fetchall()[0]
+
         #File not in database
-        if len(old_hash) == 0:
+        if len(old_file) == 0:
             print(filename, "not in database")
             return
-        old_hash, = old_hash[0]
+
+        old_hash = old_file[0]
+        old_permissions = old_file[1]
         
         try:
             #File changed
             new_hash = hasher.hash(filename)
+            new_permissions = hasher.permissions(filename)
+
             if old_hash != new_hash:
-                print(filename,"changed",new_hash)
+                print(filename,"modified",new_hash)
+            if old_permissions != new_permissions:
+                print(filename, "permissions", old_permissions, new_permissions)
         
         except FileNotFoundError:
             #File removed
@@ -111,19 +119,27 @@ class FileScanner():
             for file in all_files:
                 if file not in registered_files:
                     hash = hasher.hash(file)
-                    print(file, "created", hash)
+                    permissions = hasher.permissions(file)
+                    print(file, "created", hash, permissions)
 
     def find_changed_files(self):
-        """Run check_file_hash on all files"""
+        """Run check_file on all files"""
         files = self.database.get_all_files()
         files = [file[0] for file in files]
         for file in files:
-            self.check_file_hash(file)
+            self.check_file(file)
 
     def find_by_hash(self, hash):
         """
         Find file by hash in database.
-        Does not walk files/use new file contents.
+        Uses stale values (does not walk/use new hashes)
         """
         for file in self.database.get_by_hash(hash):
             print(hash, file[0])
+    
+    def find_by_permissions(self, permissions):
+        """Find all files with given permission
+        Uses stale values (does not walk/use new permissions)
+        """
+        for file in self.database.get_by_permissions(permissions):
+            print(permissions, file[0])

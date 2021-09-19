@@ -11,16 +11,15 @@ if __name__ == "__main__":
 
     # If no arguments given, print help message and exit
     if len(args) == 0:
-        print("Usage:")
-        print(sys.argv[0], "file            Mark files or directories")
-        print(sys.argv[0], "-u              Update")
+        print(sys.argv[0], "file             Mark files or directories")
+        print(sys.argv[0], "-u               Update")
         sys.exit(0)
 
     # If -u, Update database
     if "-u" in args:
         args.remove("-u")
         print("Updating...")
-        filescanner.update_file_hashes()
+        filescanner.update_files()
 
     files = []
     directories = []

@@ -1,3 +1,4 @@
+from hash.hasher import permissions
 import sqlite3
 
 DATABASE_FILE_NAME = "main.db"
@@ -14,7 +15,8 @@ class Database:
         self.cursor.execute("""
             CREATE TABLE IF NOT EXISTS file( 
                 filepath VARCHAR(4096) UNIQUE, 
-                hash CHARACTER(32)
+                hash CHARACTER(32),
+                permissions INTEGER
         )""")
 
         self.cursor.execute("""
@@ -32,8 +34,8 @@ class Database:
         # self.cursor.execute("COMMIT")
         self.database.commit()
 
-    def write_file(self, file_name : str, hash : str):
-        self.cursor.execute("INSERT OR REPLACE INTO file VALUES (?, ?)", (file_name, hash))
+    def write_file(self, file_name : str, hash : str, permissions : str):
+        self.cursor.execute("INSERT OR REPLACE INTO file VALUES (?, ?, ?)", (file_name, hash, permissions))
 
     def remove_file(self, filepath: str):
         self.cursor.execute("DELETE FROM file WHERE filepath=(?)", (filepath,))
@@ -72,8 +74,12 @@ class Database:
     def get_by_hash(self, hash : str):
         return self.cursor.execute("SELECT filepath FROM file WHERE hash=(?)", (hash,))
 
+    def get_by_permissions(self, permissions : str):
+        return self.cursor.execute("SELECT filepath FROM file WHERE permissions=(?)", (permissions,))
+
+
     def get_by_filepath(self, filepath : str):
-        return self.cursor.execute("SELECT hash FROM file WHERE filepath=(?)", (filepath,))
+        return self.cursor.execute("SELECT hash, permissions FROM file WHERE filepath=(?)", (filepath,))
 
     def get_directories(self):
         return self.cursor.execute("SELECT directorypath FROM directory")
