@@ -14,7 +14,7 @@ class FileScanner():
 
     def mark_file(self, filename : str):
         """Hash file, and add filename and hash to database"""
-        hash = hasher.hash_file(filename)
+        hash = hasher.hash(filename)
         self.database.write_file(filename, hash)
 
     def mark_files(self, filenames : Iterable):
@@ -89,7 +89,7 @@ class FileScanner():
         
         try:
             #File changed
-            new_hash = hasher.hash_file(filename)
+            new_hash = hasher.hash(filename)
             if old_hash != new_hash:
                 print(filename,"changed",new_hash)
         
@@ -110,7 +110,7 @@ class FileScanner():
 
             for file in all_files:
                 if file not in registered_files:
-                    hash = hasher.hash_file(file)
+                    hash = hasher.hash(file)
                     print(file, "created", hash)
 
     def find_changed_files(self):

@@ -2,7 +2,7 @@
 
 import hashlib
 
-def hash_file(filename, hasher = hashlib.sha256) -> str:
+def hash(filename, hasher = hashlib.sha256) -> str:
     hasher = hasher()
     
     #Open file in binary mode
