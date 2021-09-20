@@ -12,7 +12,7 @@ if __name__ == "__main__":
     if len(argv) == 0:
         print(sys.argv[0], "-c              find changes")
         print(sys.argv[0], "-h hash         find specific hash (stdin if no hash given)")
-        print(sys.argv[0], "-p permission   find specific permission")
+        print(sys.argv[0], "-p permission   find specific permission (stdin if no hash given)")
         print(sys.argv[0], "file            check specific files")
         sys.exit(1)
 
@@ -51,4 +51,4 @@ if __name__ == "__main__":
     # Only check specific file for changes
     else:
         for filename in argv:
-            filescanner.check_file_hash(filename)
+            filescanner.check_file(filename)
