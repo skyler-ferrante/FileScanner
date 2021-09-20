@@ -1,4 +1,3 @@
-from hash.hasher import permissions
 import sqlite3
 
 DATABASE_FILE_NAME = "main.db"

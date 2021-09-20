@@ -1,11 +1,8 @@
-from hash.hasher import permissions
-from typing import Iterable
 import os.path
+
 from hash import hasher
 from filelist.walker import walker 
 from database.database import Database
-
-import sys
 
 class FileScanner():
     __slots__ = ["database"]
@@ -19,7 +16,7 @@ class FileScanner():
         permissions = hasher.permissions(filename)
         self.database.write_file(filename, hash, permissions)
 
-    def mark_files(self, filenames : Iterable):
+    def mark_files(self, filenames):
         """
         Call mark_file on every filename in filenames.
         Uses sql transactions.
