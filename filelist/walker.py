@@ -1,4 +1,5 @@
 import os
+from os import R_OK, access
 from typing import Iterable
 
 #Will not search directories of name given in DENY_LIST
@@ -24,6 +25,7 @@ def walker(path : str, deny_list : Iterable = DENY_LIST):
         root = root+"/"
 
         #Walk includes broken symlinks and special files, so we check isFile
-        result.extend([root+file for file in files if os.path.isfile(root+file)])
+        result.extend([root+file for file in files if \
+            os.path.isfile(root+file) and os.access(file, R_OK)])
     
     return result
