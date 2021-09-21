@@ -19,7 +19,6 @@ class FileScanner():
     def mark_files(self, filenames):
         """
         Call mark_file on every filename in filenames.
-        Uses sql transactions.
         """
         self.database.start_transaction()
         
@@ -55,6 +54,7 @@ class FileScanner():
         registered_files = self.database.get_all_files()
         registered_files = [file[0] for file in registered_files]
 
+        #Transaction for new and removed files
         self.database.start_transaction()
         
         #Find and mark all new files
@@ -66,12 +66,14 @@ class FileScanner():
                     print("New file", file)
                     self.mark_file(file)
         
-        #Update all old files
+        #Remove all missing files
         for filepath in registered_files:
             if not os.path.isfile(filepath):
                 print("Removing",filepath)
                 self.database.remove_file(filepath)
                 registered_files.remove(filepath)
+        
+        #Transaction for new and removed files
         self.database.end_transaction()
 
         self.mark_files(registered_files)
