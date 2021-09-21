@@ -102,6 +102,20 @@ class FileScanner():
             #File removed
             print(filename,"removed")
 
+    def check_files(self, files):
+        for file in files:
+            self.check_file(file)
+
+    def check_dir(self, dir):
+        files = self.database.get_all_files_from_dir(dir).fetchall()
+        files = [file[0] for file in files]
+
+        self.check_files(files)
+
+    def check_dirs(self, dirs):
+        for dir in dirs:
+            self.check_dir(dir)
+
     def find_new_files(self):
         """Print new files to stdout"""
         paths = self.database.get_directories()
@@ -123,8 +137,7 @@ class FileScanner():
         """Run check_file on all files"""
         files = self.database.get_all_files()
         files = [file[0] for file in files]
-        for file in files:
-            self.check_file(file)
+        self.check_files(files)
 
     def find_by_hash(self, hash):
         """

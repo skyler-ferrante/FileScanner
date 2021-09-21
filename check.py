@@ -1,5 +1,6 @@
 #!/bin/python3
 import sys
+import os
 from filescanner.filescanner import FileScanner
 
 if __name__ == "__main__":
@@ -48,7 +49,20 @@ if __name__ == "__main__":
             permissions = int(permissions.strip())
             filescanner.find_by_permissions(permissions)
     
-    # Only check specific file for changes
+    # Only check specific files/dirs for changes
     else:
-        for filename in argv:
-            filescanner.check_file(filename)
+        files = []
+        directories = []
+        unknowns = []
+
+        # For every argument given, check if file or directory
+        for arg in argv:
+            if os.path.isfile(arg):
+                files.append(arg)
+            elif os.path.isdir(arg):
+                directories.append(arg)
+            else:
+                unknowns.append(arg)
+        
+        filescanner.check_files(files)
+        filescanner.check_dirs(directories)

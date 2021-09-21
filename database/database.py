@@ -70,6 +70,9 @@ class Database:
     def get_all_files(self):
         return self.cursor.execute("SELECT filepath FROM file")
 
+    def get_all_files_from_dir(self, dir):
+        return self.cursor.execute(f"SELECT filepath FROM file WHERE filepath LIKE '{dir}%'")
+
     def get_by_hash(self, hash : str):
         return self.cursor.execute("SELECT filepath FROM file WHERE hash=(?)", (hash,))
 
