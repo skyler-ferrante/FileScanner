@@ -66,3 +66,6 @@ if __name__ == "__main__":
         
         filescanner.check_files(files)
         filescanner.check_dirs(directories)
+
+        for unknown in unknowns:
+            print(unknown, "is not a known flag, file, or directory")
