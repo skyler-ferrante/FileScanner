@@ -20,12 +20,13 @@ def walker(path : str, deny_list : Iterable = DENY_LIST):
     #Get all files/dirs, not including symlinks
     for root, dirs, files in os.walk(path):
         for deny in deny_list:
+            print(dirs)
             dirs[:] = [dir for dir in dirs if not (root+dir).startswith(deny)]
 
         root = root+"/"
 
         #Walk includes broken symlinks and special files, so we check isFile
         result.extend([root+file for file in files if \
-            os.path.isfile(root+file) and os.access(file, R_OK)])
+            os.path.isfile(root+file) and os.access(root+file, R_OK)])
     
     return result
