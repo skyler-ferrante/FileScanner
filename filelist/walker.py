@@ -20,7 +20,6 @@ def walker(path : str, deny_list : Iterable = DENY_LIST):
     #Get all files/dirs, not including symlinks
     for root, dirs, files in os.walk(path):
         for deny in deny_list:
-            print(dirs)
             dirs[:] = [dir for dir in dirs if not (root+dir).startswith(deny)]
 
         root = root+"/"
