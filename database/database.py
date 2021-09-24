@@ -64,9 +64,6 @@ class Database:
     # NOTE: THESE ARE USING THE SAME DATABASE CONNECTION, put data into something before calling another database method
     # DATA WILL BE CLEARED IF ANOTHER DATABASE METHOD IS CALLED
 
-    def get_all(self):
-        return self.cursor.execute("SELECT * FROM file")
-
     def get_all_files(self):
         return self.cursor.execute("SELECT filepath FROM file")
 
