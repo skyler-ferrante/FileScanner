@@ -2,9 +2,7 @@
 
 Creates an sqlite database correlating filepaths to file hashes and permissions
 
-The current state of the system can be check against this database to check for changes
-
-This could be useful to quickly see what configuration files were changed, after something breaks
+The current state of the system can be checked against this database to find changes
 
 To generate the database use:
 ```
