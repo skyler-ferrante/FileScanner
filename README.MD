@@ -21,3 +21,7 @@ After the database is generated you can use:
 ./mark.py  -u                #Update database
 ./info.py                    #Get basic information on database
 ```
+
+Note: Default ignores the directories /mnt, /proc, /var, and /run
+
+This can be changed in filelist/walker.py
