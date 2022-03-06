@@ -4,3 +4,8 @@
 data/
 old-data/
 hashes
+
+# For pyinstaller
+build/
+dist/
+*.spec
