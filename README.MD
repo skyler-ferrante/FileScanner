@@ -22,11 +22,11 @@ After the database is generated you can use:
 ./info.py                    #Get basic information on database
 ```
 
-Note: Default ignores the directories /mnt, /proc, /var, and /run
-
-This can be changed in filelist/walker.py
-
 Create binaries with pyinstaller:
 ```
 make
 ``` 
+
+Note: Default ignores the directories /mnt, /proc, /var, and /run
+
+This can be changed in filelist/walker.py
