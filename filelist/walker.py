@@ -3,7 +3,7 @@ from os import R_OK, access
 from typing import Iterable
 
 #Will not search directories of name given in DENY_LIST
-DENY_LIST = ["/mnt", "/proc", "/var", "/run"]
+DENY_LIST = ["/mnt", "/proc", "/run"]
 
 def walker(path : str, deny_list : Iterable = DENY_LIST):
     if not os.path.exists(path):
