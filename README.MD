@@ -22,6 +22,15 @@ After the database is generated you can use:
 ./info.py                    #Get basic information on database
 ```
 
+Example (finding new crontabs)
+```
+$ sudo ./mark.py /var/ # Keep track of var
+$ sudo ./check.py -c # Look for changes (none)
+$ (crontab -l; echo "* * * * * /home/user/some_script3.sh") | crontab - # Add crontab entry
+$ sudo ./check.py -c # Look for changes (should find crontab modification)
+/var/spool/cron/crontabs/sky modified 144422a6890f794dc69900d94ec92f0d603e85dbd382754399938d967e96bff7
+```
+
 Create binaries with pyinstaller:
 ```
 make
